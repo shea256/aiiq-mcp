@@ -9,6 +9,7 @@ export interface AiiqClientOptions {
   baseUrl?: string;
   fetchImpl?: typeof fetch;
   cacheTtlMs?: number;
+  timeoutMs?: number;
   now?: () => number;
   version?: string;
 }
@@ -20,11 +21,13 @@ interface CacheEntry {
 
 const DEFAULT_BASE = 'https://www.aiiq.org';
 const DEFAULT_TTL_MS = 5 * 60 * 1000;
+const DEFAULT_TIMEOUT_MS = 15 * 1000;
 
 export class AiiqClient {
   private readonly baseUrl: string;
   private readonly fetchImpl: typeof fetch;
   private readonly ttl: number;
+  private readonly timeoutMs: number;
   private readonly now: () => number;
   private readonly userAgent: string;
   private readonly cache = new Map<string, CacheEntry>();
@@ -34,6 +37,7 @@ export class AiiqClient {
     this.baseUrl = base.replace(/\/$/, '');
     this.fetchImpl = opts.fetchImpl ?? fetch;
     this.ttl = opts.cacheTtlMs ?? DEFAULT_TTL_MS;
+    this.timeoutMs = opts.timeoutMs ?? DEFAULT_TIMEOUT_MS;
     this.now = opts.now ?? (() => Date.now());
     this.userAgent = `aiiq-mcp/${opts.version ?? '0.0.0'}`;
   }
@@ -44,6 +48,7 @@ export class AiiqClient {
 
     const res = await this.fetchImpl(`${this.baseUrl}${path}`, {
       headers: { 'User-Agent': this.userAgent, Accept: 'application/json' },
+      signal: AbortSignal.timeout(this.timeoutMs),
     });
     if (!res.ok) {
       throw new AiiqApiError(`AI IQ API returned ${res.status} for ${path}`, res.status, path);

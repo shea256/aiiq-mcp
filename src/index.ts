@@ -15,4 +15,9 @@ const server = new McpServer({ name: 'aiiq-mcp', version: pkg.version });
 registerTools(server, client);
 
 const transport = new StdioServerTransport();
-await server.connect(transport);
+try {
+  await server.connect(transport);
+} catch (err) {
+  process.stderr.write(`aiiq-mcp: failed to start: ${err instanceof Error ? err.message : String(err)}\n`);
+  process.exit(1);
+}
