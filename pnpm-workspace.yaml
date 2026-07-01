@@ -1,0 +1,4 @@
+# Marks this package as its own pnpm workspace root (self-contained repo).
+# Approve esbuild's build script (pulled in by vitest) so pnpm runs cleanly.
+allowBuilds:
+  esbuild: true
