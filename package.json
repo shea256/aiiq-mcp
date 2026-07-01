@@ -1,6 +1,7 @@
 {
   "name": "@aiiq/mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "mcpName": "io.github.shea256/aiiq-mcp",
   "description": "Model Context Protocol server for AI IQ (aiiq.org) — query model IQ, rankings, benchmarks, and methodology.",
   "type": "module",
   "bin": { "aiiq-mcp": "dist/index.js" },

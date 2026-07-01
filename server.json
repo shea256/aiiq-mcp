@@ -1,0 +1,27 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.shea256/aiiq-mcp",
+  "description": "Query AI IQ (aiiq.org) model IQ, rankings, benchmarks, and methodology.",
+  "repository": {
+    "url": "https://github.com/shea256/aiiq-mcp",
+    "source": "github"
+  },
+  "version": "0.1.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@aiiq/mcp",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        {
+          "description": "Override the AI IQ API base URL (default https://www.aiiq.org).",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false,
+          "name": "AIIQ_API_BASE"
+        }
+      ]
+    }
+  ]
+}

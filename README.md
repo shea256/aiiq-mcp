@@ -7,7 +7,15 @@ Read-only. Talks to the public AI IQ API over HTTPS; no API key required.
 
 ## Install
 
-Add to your MCP client config (e.g. `.mcp.json`):
+Requires Node.js 18+. No API key needed. Works in any MCP client.
+
+**Claude Code** (one command):
+
+```bash
+claude mcp add aiiq -- npx -y @aiiq/mcp          # add --scope user for all projects
+```
+
+**Claude Desktop** — edit `claude_desktop_config.json` (Settings → Developer → Edit Config) and add:
 
 ```json
 {
@@ -15,6 +23,15 @@ Add to your MCP client config (e.g. `.mcp.json`):
     "aiiq": { "command": "npx", "args": ["-y", "@aiiq/mcp"] }
   }
 }
+```
+
+Then fully quit and reopen the app. (If Node is managed by nvm/asdf, use the absolute path to `npx`
+as the `command`, since the desktop app doesn't inherit your shell PATH.)
+
+**Cursor / Windsurf / other clients** — same JSON in the client's MCP config:
+
+```json
+{ "mcpServers": { "aiiq": { "command": "npx", "args": ["-y", "@aiiq/mcp"] } } }
 ```
 
 ## Tools
