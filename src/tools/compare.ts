@@ -5,7 +5,7 @@ export async function compareModels(client: AiiqClient, ids: string[]): Promise<
   const results = await Promise.all(
     ids.map(async (id) => {
       try {
-        const model = await client.get(`/api/models/${encodeURIComponent(id)}`);
+        const model = await client.get(`/models/${encodeURIComponent(id)}`);
         return { id, found: true as const, model };
       } catch (err) {
         if (err instanceof AiiqApiError && err.status === 404) {

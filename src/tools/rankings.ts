@@ -1,39 +1,20 @@
-import { AiiqClient } from '../client.js';
+import { AiiqClient, AiiqApiError } from '../client.js';
+import type { RankingDetail, RankingsResponse } from '../types.js';
 import { textResult, errorResult, type ToolResult } from './result.js';
 
-interface Ranking {
-  id: string;
-  rankingName: string;
-  rankingType: string;
-  dimension?: string | null;
-  direction: string;
-  models: unknown[];
-}
-
-interface RankingsResponse {
-  apiVersion?: string;
-  rankings?: Ranking[];
-}
-
 export async function listRankings(client: AiiqClient): Promise<ToolResult> {
-  const data = await client.get<RankingsResponse>('/api/rankings');
-  const catalog = (data.rankings ?? []).map((r) => ({
-    id: r.id,
-    rankingName: r.rankingName,
-    rankingType: r.rankingType,
-    dimension: r.dimension ?? null,
-    direction: r.direction,
-  }));
-  return textResult({ apiVersion: data.apiVersion, rankings: catalog });
+  return textResult(await client.get<RankingsResponse>('/rankings'));
 }
 
 export async function getRanking(client: AiiqClient, id: string): Promise<ToolResult> {
-  const data = await client.get<RankingsResponse>('/api/rankings');
-  const rankings = data.rankings ?? [];
-  const match = rankings.find((r) => r.id === id);
-  if (!match) {
-    const ids = rankings.map((r) => r.id).join(', ');
-    return errorResult(`Ranking "${id}" not found. Available ranking ids: ${ids}`);
+  try {
+    return textResult(await client.get<RankingDetail>(`/rankings/${encodeURIComponent(id)}`));
+  } catch (err) {
+    if (err instanceof AiiqApiError && err.status === 404) {
+      const catalog = await client.get<RankingsResponse>('/rankings');
+      const ids = catalog.rankings.map((ranking) => ranking.id).join(', ');
+      return errorResult(`Ranking "${id}" not found. Available ranking ids: ${ids}`);
+    }
+    throw err;
   }
-  return textResult(match);
 }

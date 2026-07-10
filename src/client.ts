@@ -19,7 +19,7 @@ interface CacheEntry {
   expires: number;
 }
 
-const DEFAULT_BASE = 'https://www.aiiq.org';
+const DEFAULT_BASE = 'https://www.aiiq.org/api/v1';
 const DEFAULT_TTL_MS = 5 * 60 * 1000;
 const DEFAULT_TIMEOUT_MS = 15 * 1000;
 

@@ -15,8 +15,8 @@ function fakeClient(routes: Record<string, unknown>, errors: Record<string, numb
 describe('compareModels', () => {
   it('separates found models from missing ids', async () => {
     const client = fakeClient(
-      { '/api/models/a': { id: 'a', iq: 130 } },
-      { '/api/models/b': 404 },
+      { '/models/a': { id: 'a', iq: 130 } },
+      { '/models/b': 404 },
     );
     const res = await compareModels(client, ['a', 'b']);
     const parsed = JSON.parse(res.content[0].text);
