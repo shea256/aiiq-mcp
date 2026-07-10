@@ -4,13 +4,13 @@ import { AiiqClient } from '../src/client.js';
 import { registerTools } from '../src/tools/index.js';
 
 describe('registerTools', () => {
-  it('registers all seven tools', () => {
+  it('registers all nine tools', () => {
     const names: string[] = [];
     const fakeServer = { registerTool: (name: string) => { names.push(name); } };
     registerTools(fakeServer as unknown as McpServer, {} as unknown as AiiqClient);
     expect(names.sort()).toEqual([
-      'compare_models', 'get_methodology', 'get_model', 'get_ranking',
-      'list_benchmarks', 'list_models', 'list_rankings',
+      'compare_models', 'get_domain', 'get_methodology', 'get_model', 'get_ranking',
+      'list_benchmarks', 'list_domains', 'list_models', 'list_rankings',
     ]);
   });
 });

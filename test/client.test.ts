@@ -9,7 +9,8 @@ describe('AiiqClient', () => {
   it('sends aiiq-mcp User-Agent', async () => {
     const fetchImpl = vi.fn(async () => jsonResponse({ ok: 1 }));
     const c = new AiiqClient({ fetchImpl: fetchImpl as unknown as typeof fetch, version: '1.2.3' });
-    await c.get('/api/models');
+    await c.get('/models');
+    expect(fetchImpl.mock.calls[0][0]).toBe('https://www.aiiq.org/api/v1/models');
     const init = fetchImpl.mock.calls[0][1] as RequestInit;
     expect((init.headers as Record<string, string>)['User-Agent']).toBe('aiiq-mcp/1.2.3');
   });
@@ -18,8 +19,8 @@ describe('AiiqClient', () => {
     let t = 1000;
     const fetchImpl = vi.fn(async () => jsonResponse({ n: 1 }));
     const c = new AiiqClient({ fetchImpl: fetchImpl as unknown as typeof fetch, cacheTtlMs: 5000, now: () => t });
-    await c.get('/api/models');
-    await c.get('/api/models');
+    await c.get('/models');
+    await c.get('/models');
     expect(fetchImpl).toHaveBeenCalledTimes(1);
   });
 
@@ -27,15 +28,15 @@ describe('AiiqClient', () => {
     let t = 1000;
     const fetchImpl = vi.fn(async () => jsonResponse({ n: 1 }));
     const c = new AiiqClient({ fetchImpl: fetchImpl as unknown as typeof fetch, cacheTtlMs: 5000, now: () => t });
-    await c.get('/api/models');
+    await c.get('/models');
     t = 7000;
-    await c.get('/api/models');
+    await c.get('/models');
     expect(fetchImpl).toHaveBeenCalledTimes(2);
   });
 
   it('throws AiiqApiError with status on non-ok', async () => {
     const fetchImpl = vi.fn(async () => jsonResponse({ error: 'x' }, 404));
     const c = new AiiqClient({ fetchImpl: fetchImpl as unknown as typeof fetch });
-    await expect(c.get('/api/models/nope')).rejects.toMatchObject({ name: 'AiiqApiError', status: 404 });
+    await expect(c.get('/models/nope')).rejects.toMatchObject({ name: 'AiiqApiError', status: 404 });
   });
 });

@@ -5,6 +5,7 @@ import { listModels, getModel } from './models.js';
 import { listRankings, getRanking } from './rankings.js';
 import { listBenchmarks, getMethodology } from './catalog.js';
 import { compareModels } from './compare.js';
+import { getDomain, listDomains } from './domains.js';
 
 export function registerTools(server: McpServer, client: AiiqClient): void {
   server.registerTool(
@@ -34,10 +35,30 @@ export function registerTools(server: McpServer, client: AiiqClient): void {
     {
       title: 'List rankings',
       description:
-        'Available leaderboards: composite IQ, effective cost, per-dimension, and per-benchmark. Returns ids + names only.',
+        'Available leaderboards: composite IQ, effective cost, per-dimension, and per-benchmark, with model counts and URLs.',
       inputSchema: {},
     },
     () => listRankings(client),
+  );
+
+  server.registerTool(
+    'list_domains',
+    {
+      title: 'List domains',
+      description: 'Applied-capability domains with benchmark counts and URLs.',
+      inputSchema: {},
+    },
+    () => listDomains(client),
+  );
+
+  server.registerTool(
+    'get_domain',
+    {
+      title: 'Get domain detail',
+      description: 'Composite model IQs and benchmark leaderboards for one applied-capability domain.',
+      inputSchema: { slug: z.string().describe("Domain slug, e.g. 'cybersecurity'") },
+    },
+    ({ slug }) => getDomain(client, slug),
   );
 
   server.registerTool(

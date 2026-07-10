@@ -1,7 +1,7 @@
 # @aiiq/mcp
 
 Model Context Protocol server for [AI IQ](https://www.aiiq.org) — query AI model IQ,
-rankings, benchmarks, and methodology from any MCP client (Claude Code, etc.).
+rankings, applied-capability domains, benchmarks, and methodology from any MCP client (Claude Code, etc.).
 
 Read-only. Talks to the public AI IQ API over HTTPS; no API key required.
 
@@ -38,15 +38,18 @@ as the `command`, since the desktop app doesn't inherit your shell PATH.)
 
 - `list_models` — all public models with IQ, 7 dimension scores, emotional reasoning, rank, cost
 - `get_model` — full detail for one model (incl. per-benchmark results)
-- `list_rankings` — available leaderboards (ids + names)
+- `list_rankings` — available leaderboards with ids, names, model counts, and URLs
 - `get_ranking` — ordered models for one ranking id
+- `list_domains` — applied-capability domains and benchmark counts
+- `get_domain` — model composite IQs and benchmark leaderboards for one domain
 - `list_benchmarks` — benchmark catalog
 - `get_methodology` — how AI IQ is computed
 - `compare_models` — side-by-side detail for several models
 
 ## Config
 
-- `AIIQ_API_BASE` — override the API base URL (default `https://www.aiiq.org`).
+- `AIIQ_API_BASE` — override the versioned API base URL (default `https://www.aiiq.org/api/v1`).
+  A custom value must be the API root that contains paths such as `/models` and `/rankings`.
 
 ## Development
 

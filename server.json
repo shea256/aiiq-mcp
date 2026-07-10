@@ -6,16 +6,16 @@
     "url": "https://github.com/shea256/aiiq-mcp",
     "source": "github"
   },
-  "version": "0.1.1",
+  "version": "0.2.0",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@aiiq/mcp",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "transport": { "type": "stdio" },
       "environmentVariables": [
         {
-          "description": "Override the AI IQ API base URL (default https://www.aiiq.org).",
+          "description": "Override the versioned AI IQ API base URL (default https://www.aiiq.org/api/v1).",
           "isRequired": false,
           "format": "string",
           "isSecret": false,
